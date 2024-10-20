@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -63,7 +63,7 @@
           cursor: not-allowed;
       }
 
-      .ibutton2 {
+      .submitButton {
           background-color: #007bff;
           color: #fff;
           padding: 12px;
@@ -74,7 +74,7 @@
           transition: background-color 0.3s ease;
       }
 
-      .ibutton2:hover {
+      .submitButton:hover {
           background-color: #0056b3;
       }
 
@@ -171,7 +171,7 @@
       <option value="77">77</option>
       <option value="78">78</option>
       <option value="79">79</option>
-      <option value="80">80</option>
+      <option selected value="80">80</option>
       <option value="81">81</option>
       <option value="82">82</option>
       <option value="83">83</option>
@@ -338,7 +338,7 @@
       <option value="15">15</option>
       <option value="16">16</option>
       <option value="17">17</option>
-      <option value="18">18</option>
+      <option selected value="18">18</option>
       <option value="19">19</option>
       <option value="20">20</option>
       <option value="21">21</option>
@@ -391,40 +391,43 @@
     <label for="cals">Kalorienbedarf in kcal</label>
     <input type="text" readonly name="cals" id="cals" size="5">
 
-    <button type="button" class="ibutton2" onclick="ccals()">Lean Bulk Makros berechnen</button>
+    <button type="button" class="submitButton" onclick="calculate()">Lean Bulk Makros berechnen</button>
   </form>
 </div>
 
 <script>
-  function ccals () {
-    const weight = parseInt(document.getElementById('weight').value)
-    const kfa = parseInt(document.getElementById('kfa').value)
+  function calculate(){
+    const weight = parseFloat(document.getElementById('weight').value)
+    const kfa = parseFloat(document.getElementById('kfa').value)
+
     const lbm = (weight * (1 - (kfa / 100))).toFixed(1)
+    document.getElementById("lbm").value = lbm;
 
-    document.getElementById('lbm').value = lbm
+    const fats = (lbm * 1).toFixed(0)
+    const protein = (lbm * 2.5).toFixed(0)
 
-    const protein = (lbm * 2.5).toFixed()
-    const fats = lbm.toFixed()
     let carbs
-    let carbFactor
+    let cfactor
 
     if (kfa < 11) {
-      carbFactor = 5
-    } else if (kfa < 16) {
-      carbFactor = 4
+      carbs = (lbm * 5).toFixed(0);
+      cfactor = 5;
+    } else if (kfa >= 11 && kfa < 16) {
+      carbs = (lbm * 4).toFixed(0);
+      cfactor = 4;
     } else {
-      carbFactor = 3
+      carbs = (lbm * 3).toFixed(0);
+      cfactor = 3;
     }
 
-    carbs = (lbm * carbFactor).toFixed()
+    document.getElementById("cfactor").value = cfactor;
+    document.getElementById("protein").value = protein;
+    document.getElementById("fats").value = fats;
+    document.getElementById("carbs").value = carbs;
 
-    document.getElementById('protein').value = protein
-    document.getElementById('fats').value = fats
-    document.getElementById('cfactor').value = carbFactor
-    document.getElementById('carbs').value = carbs
-
-    document.getElementById('cals').value = (protein * 4.1 + carbs * 4.1 + fats * 9.3).toFixed()
+    document.getElementById("cals").value = (protein * 4.1 + carbs * 4.1 + fats * 9.3).toFixed(0);
   }
+
 </script>
 
 </body>
